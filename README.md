@@ -1,59 +1,77 @@
-# � University Club Management System (ISIMM)
+# 🎓 University Club Management System (ISIMM)
 
 ## 🌟 Project Overview
-This project is a **University Club Management System** designed for *Institut Supérieur d'Informatique et de Mathématiques de Monastir (ISIMM)*. It serves as a centralized platform to streamline the administration of student clubs, events, and activities.
+This project is a **University Club Management System** developed for the *Institut Supérieur d'Informatique et de Mathématiques de Monastir (ISIMM)*. The platform is designed to help students, clubs, and administrators manage events, memberships, and communications more effectively.
 
 ---
 
 ## ✨ Key Features
-- **Club Registration & Management** - Complete lifecycle management of student clubs
-- **Event Scheduling & Tracking** - Calendar integration with reminders
-- **Student Participation Analytics** - Engagement metrics and reporting
-- **Department-Specific Clubs**:
-  - Informatique
-  - Mathématiques
-  - Technologies de l'Information
-- **News & Announcements Dashboard** - Centralized communication hub
+
+- 🏷️ **User Authentication & Roles**
+  - Secure login/register system
+  - Role-based access for students, club admins, and super admins
+
+- 🏛️ **Club Management**
+  - Club creation, member requests, approvals
+  - Department-based categorization (Informatique, Mathématiques, TI)
+
+- 📆 **Event Planning**
+  - Club event creation & editing
+  - Public event calendar with filter options
+
+- 📣 **Announcements & News**
+  - Admin dashboard for broadcasting updates
+  - Notification system for members
+
+- 📊 **Analytics**
+  - Track student participation and club growth
+  - View charts on engagement metrics
 
 ---
 
-## 🤖 AI Integration Options
-The system supports two AI integration methods:
+## 🤖 AI Integration (Optional Ideas)
 
-### 1. DeepSeek API
-**Setup Instructions**:
-1. Obtain API credentials from [DeepSeek](https://platform.deepseek.com)
-2. Configure `config/ai_config.json` with your endpoint
-3. Activate via the admin panel
+### 1. DeepSeek API (for chat or event suggestion assistant)
+**Steps:**
+1. Get API key from [DeepSeek](https://platform.deepseek.com)
+2. Fill in your key in `config/ai_config.json`
+3. Enable the integration from the admin dashboard
 
-### 2. Botpress Chatbot
-**Setup Instructions**:
-1. Deploy a [Botpress](https://botpress.com) server
-2. Set the webhook in `config/botpress_config.json`
-3. Import the chatbot templates from `/templates`
+### 2. Botpress Chatbot (for student FAQs)
+**Steps:**
+1. Deploy Botpress server
+2. Set up webhook in `config/botpress_config.json`
+3. Import the custom flow from `/templates/botpress-flow.json`
 
 ---
 
 ## ⚙️ Technical Stack
-| Component       | Technology           |
-|----------------|----------------------|
-| Backend        | Node.js 16+, Express |
-| Database       | MongoDB 4.4+         |
-| Frontend       | React.js             |
-| Deployment     | Docker (optional)    |
+
+| Layer            | Technology             |
+|------------------|------------------------|
+| 🖥️ Frontend       | React.js + Tailwind CSS |
+| 🧠 State Mgmt     | Redux Toolkit          |
+| 🌐 Backend        | Node.js + Express.js    |
+| 🗄️ Database       | MongoDB Atlas           |
+| 🔐 Auth           | JWT + Bcrypt            |
+| ☁️ Hosting        | Vercel / Render / Railway (optional) |
+| 🐳 Containerization | Docker (optional)       |
 
 ---
 
 ## 🚀 Quick Start
+
 ```bash
-# Clone repository
-git clone https://github.com/your-repo/university-club-mgmt.git
+# Clone the repository
+git clone https://github.com/yahiaghoufa/club-management-isimm.git
+cd club-management-isimm
 
 # Install dependencies
 npm install
 
-# Configure environment
+# Set up environment
 cp .env.example .env
+# (Edit the .env file with your credentials)
 
-# Start development server
+# Run the development server
 npm run dev

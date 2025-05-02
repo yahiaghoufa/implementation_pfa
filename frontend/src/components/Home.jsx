@@ -3,35 +3,8 @@ import axios from 'axios';
 import './styles.css';
 import Footer from './Footer';
 import Header from './Header';
-const upcomingEvents = [
-  {
-    id: 1,
-    title: "Composition de Programmation",
-    date: "15 Mars 2024",
-    location: "Amphi A1",
-    description: "Participez à notre compétition annuelle de codage",
-    club: "Club Informatique",
-    image: "/event1.jpg" // Path to your image in public folder
-  },
-  {
-    id: 2,
-    title: "Forum Mathématique",
-    date: "22 Avril 2024",
-    location: "Espace Culturel",
-    description: "Conférences et ateliers pratiques",
-    club: "Club Mathématiques",
-    image: "/event2.jfif"
-  },
-  {
-    id: 3,
-    title: "Journée Portes Ouvertes",
-    date: "5 Mai 2024",
-    location: "Campus Principal",
-    description: "Découverte des activités des clubs",
-    club: "Bureau des Étudiants",
-    image: "/event3.jfif"
-  },
-];
+import EventsSection from './EventsSection';
+
 const Home = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -45,22 +18,49 @@ const Home = () => {
   });
 
   useEffect(() => {
-    const script1 = document.createElement('script');
-    script1.src = "https://cdn.botpress.cloud/webchat/v2.4/inject.js";
-    script1.async = true;
-    document.body.appendChild(script1);
+    const loadBotpress = async () => {
+      try {
+        if (!window.botpressWebChat) {
+          await new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = "https://cdn.botpress.cloud/webchat/v2.4/inject.js";
+            script.async = true;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+          });
+        }
 
-    const script2 = document.createElement('script');
-    script2.src = "https://files.bpcontent.cloud/2025/04/24/23/20250424231359-SAWVGTQD.js"; 
-    script2.async = true;
-    document.body.appendChild(script2);
+        window.botpressWebChat.init({
+          host: 'https://cdn.botpress.cloud/webchat/v2',
+          botId: 'votre-bot-id',
+          clientId: 'votre-client-id',
+          messagingUrl: 'https://messaging.botpress.cloud',
+          disableSessionStorage: true,
+          enableReset: true,
+          showPoweredBy: false,
+          styles: {
+            primaryColor: '#1a365d',
+            secondaryColor: '#c5a047'
+          }
+        });
 
-    return () => {
-      
-      document.body.removeChild(script1);
-      document.body.removeChild(script2);
+      } catch (error) {
+        console.error('Erreur Botpress:', error);
+        if (error.message.includes('init')) {
+          console.error('Vérifiez les clés API et la configuration Botpress');
+        }
+      }
     };
-  }, []); 
+
+    const timeout = setTimeout(loadBotpress, 2000);
+    return () => {
+      clearTimeout(timeout);
+      if (window.botpressWebChat) {
+        window.botpressWebChat.destroy();
+      }
+    };
+  }, []);
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -125,83 +125,67 @@ const Home = () => {
 
       <main className="main-content">
         <div className="hero-section">
-         
-        </div>
-      </main>
-
-      <div className="isimm-info">
-        <div className="about-section">
-          <h2>À propos de l'ISIMM</h2>
-          <p>
-            L'Institut Supérieur d'Informatique et de Mathématiques de Monastir (ISIMM) 
-            est un établissement universitaire tunisien rattaché à l'Université de Monastir.
-          </p>
-          <div className="highlights">
-            <div className="highlight-card">
-              <h3>Formations</h3>
-              <ul>
-                <li>Licences Fondamentales</li>
-                <li>Licences Appliquées</li>
-                <li>Masters</li>
-                <li>Doctorats</li>
-              </ul>
-            </div>
-            <div className="highlight-card">
-              <h3>Départements</h3>
-              <ul>
-                <li>Informatique</li>
-                <li>Mathématiques</li>
-                <li>Technologies de l'Information</li>
-              </ul>
-            </div>
-            <div className="highlight-card">
-              <h3>Vie Étudiante</h3>
-              <ul>
-                <li>Clubs universitaires</li>
-                <li>Activités culturelles</li>
-                <li>Événements scientifiques</li>
-              </ul>
-            </div>
-          </div>
-          <a href="http://www.isimm.rnu.tn/public/" target="_blank" rel="noopener noreferrer" className="official-link">
-            Visiter le site officiel de l'ISIMM
-          </a>
+          <h1>Bienvenue à EVENTY</h1>
+          <p>Gestion des clubs universitaires</p>
         </div>
 
-        <div className="news-section">
-          <h2>Actualités des Clubs</h2>
-          
-          <div className="events-container">
-            {upcomingEvents.map(event => (
-              <div key={event.id} className="event-card">
-                <div className="event-image-container">
-                  <img 
-                    src={event.image} 
-                    alt={event.title}
-                    className="event-image small-image"
-                  />
-                </div>
-                <div className="event-content">
-                  <h3>{event.title}</h3>
-                  <p className="event-date">{event.date}</p>
-                  <p className="event-location">{event.location}</p>
-                  <p className="event-description">{event.description}</p>
-                  <div className="event-club">
-                    <span>{event.club}</span>
-                    <button className="details-btn">Voir détails</button>
-                  </div>
-                </div>
+        <div className="isimm-info">
+          <div className="about-section text-center">
+            <h2 className="section-title">À propos de EVENTY</h2>
+            <p className="about-description">
+              EVENTY est la plateforme numérique dédiée à la gestion et à l'organisation 
+              des clubs universitaires de l'ISIMM. Notre solution centralise toutes les 
+              activités étudiantes, facilite la planification d'événements, et renforce 
+              la collaboration entre les différents clubs grâce à des outils modernes 
+              de gestion et de communication.
+            </p>
+            <div className="highlights">
+              <div className="highlight-card">
+                <h3>Fonctionnalités Clés</h3>
+                <ul>
+                  <li>Gestion centralisée des événements</li>
+                  <li>Inscriptions en ligne</li>
+                  <li>Calendrier interactif</li>
+                  <li>Espace collaboratif</li>
+                </ul>
               </div>
-            ))}
+              <div className="highlight-card">
+                <h3>Avantages</h3>
+                <ul>
+                  <li>Optimisation des processus</li>
+                  <li>Visibilité des activités</li>
+                  <li>Interaction en temps réel</li>
+                  <li>Rapports automatisés</li>
+                </ul>
+              </div>
+              <div className="highlight-card">
+                <h3>Pour les Étudiants</h3>
+                <ul>
+                  <li>Accès unifié aux activités</li>
+                  <li>Notifications personnalisées</li>
+                  <li>Participation simplifiée</li>
+                  <li>Suivi des engagements</li>
+                </ul>
+              </div>
+            </div>
           </div>
 
-          <div className="news-card">
-            <h3>Inscriptions ouvertes</h3>
-            <p>Rejoignez les clubs universitaires pour l'année 2024-2025.</p>
+          <div className="news-section">
+            <h2>Actualités des Clubs</h2>
+            <div className="news-card">
+              <h3>Événements à venir</h3>
+              <p>Découvrez les prochaines activités organisées par les clubs de l'ISIMM.</p>
+            </div>
+            <div className="news-card">
+              <h3>Inscriptions ouvertes</h3>
+              <p>Rejoignez les clubs universitaires pour l'année 2024-2025.</p>
+            </div>
           </div>
         </div>
-      </div>
 
+        <EventsSection />
+
+      </main>
 
       {showLogin && (
         <div className="modal-overlay">
